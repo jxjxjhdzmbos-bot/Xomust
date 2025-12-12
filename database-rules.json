@@ -1,0 +1,64 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid == $uid",
+        "username": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+        },
+        "email": {
+          ".validate": "newData.isString()"
+        },
+        "profileImageUrl": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    "rooms": {
+      "$roomName": {
+        ".read": "auth != null",
+        ".write": "auth != null && (
+          !data.exists() || 
+          data.child('player1Id').val() == auth.uid || 
+          data.child('player2Id').val() == auth.uid ||
+          data.child('player2Id').val() == null
+        )",
+        ".validate": "newData.hasChildren(['roomId', 'roomName', 'player1Id', 'player1Username'])",
+        "roomId": {
+          ".validate": "newData.isString()"
+        },
+        "roomName": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "player1Id": {
+          ".validate": "newData.isString()"
+        },
+        "player1Username": {
+          ".validate": "newData.isString()"
+        },
+        "player2Id": {
+          ".validate": "newData.isString() || newData.val() == null"
+        },
+        "player2Username": {
+          ".validate": "newData.isString() || newData.val() == null"
+        },
+        "currentTurnId": {
+          ".validate": "newData.isString()"
+        },
+        "boardState": {
+          ".validate": "newData.isString() && newData.val().length == 9"
+        },
+        "winnerId": {
+          ".validate": "newData.isString() || newData.val() == null"
+        },
+        "isGameOver": {
+          ".validate": "newData.isBoolean()"
+        },
+        "lastMoveTime": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    }
+  }
+}
