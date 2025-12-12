@@ -18,12 +18,7 @@
     "rooms": {
       "$roomName": {
         ".read": "auth != null",
-        ".write": "auth != null && (
-          !data.exists() || 
-          data.child('player1Id').val() == auth.uid || 
-          data.child('player2Id').val() == auth.uid ||
-          data.child('player2Id').val() == null
-        )",
+        ".write": "auth != null && (!data.exists() || data.child('player1Id').val() == auth.uid || data.child('player2Id').val() == auth.uid || data.child('player2Id').val() == null)",
         ".validate": "newData.hasChildren(['roomId', 'roomName', 'player1Id', 'player1Username'])",
         "roomId": {
           ".validate": "newData.isString()"
